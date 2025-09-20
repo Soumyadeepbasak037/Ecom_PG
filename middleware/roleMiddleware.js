@@ -1,6 +1,6 @@
 function roleMiddleware(allowedRoles) {
   return (req, res, next) => {
-    const user = req.user; // usually set after JWT/session authentication
+    const user = req.user;
 
     if (!user || !allowedRoles.includes(user.role)) {
       return res
