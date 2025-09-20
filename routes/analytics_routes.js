@@ -3,17 +3,19 @@ const router = express.Router();
 const analytics_controller = require("../controllers/analyticsController");
 const auth_middleware = require("../middleware/authmiddleware");
 
-router.post(
+router.get(
   "/getSalesSummary",
   auth_middleware,
   analytics_controller.getSalesSummary
 );
+
 router.get(
   "/getTopProducts",
   auth_middleware,
   analytics_controller.getTopProducts
 );
-router.post(
+
+router.get(
   "/getTopCustomers",
   auth_middleware,
   analytics_controller.getTopCustomers
