@@ -1,15 +1,11 @@
-function roleMiddleware(allowedRoles) {
-  return (req, res, next) => {
-    const user = req.user;
+function roleMiddleware(req, res, next) {
+  const user = req.user;
 
-    if (!user || !allowedRoles.includes(user.role)) {
-      return res
-        .status(403)
-        .json({ message: "Access denied: insufficient role" });
-    }
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ message: "Access denied: Admins only" });
+  }
 
-    next();
-  };
+  next();
 }
 
 export default roleMiddleware;

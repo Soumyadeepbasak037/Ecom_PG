@@ -9,11 +9,13 @@ const authRoutes = require("../e_com_pg/routes/authroutes");
 const userRoutes = require("../e_com_pg/routes/user_routes");
 const productRoutes = require("../e_com_pg/routes/product_routes");
 const orderRoutes = require("../e_com_pg/routes/order_routes");
+const analyticsRoutes = require("../e_com_pg/routes/analytics_routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is running");

@@ -1,49 +1,70 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 export default function FetchProducts() {
-      const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
-      // useEffect(()=>{  fetch("http://localhost:3000/api/products/").then((res)=>{
-      //   return res.json()
-      // })
-      // .then((data)=>{
-      //   console.log(data)
-      //   setData(data)
-      // })},[])
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/products/");
+        const data = await response.json();
+        setData(data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
-      useEffect(()=>{(async()=>{
-        try{
-          const response = await fetch("http://localhost:3000/api/products/")
-          const data = await response.json()
-          setData(data)
-        }
-        catch(err){
-          console.log(err)
-        }
-      })()} //IIFE used, function gets called immediately, the function initially needs to defines inside a parenthesis
-    ,[])
+  const addToCart = async (productId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:3000/api/orders/add_to_cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, 
+        },
+        body: JSON.stringify({ product_id:productId,quantity:1}),
+      });
 
-
-      return (
-  <div className="flex flex-wrap gap-4 justify-center">
-    {data.map((item) => (
-      <div
-        key={item.id}
-        className="w-48 bg-white p-4 shadow-lg rounded-xl dark:bg-slate-800 dark:shadow-none dark:outline-white/10"
-      >
-        <img
-          src={item.img_url}
-          alt={item.name}
-          className="w-full h-auto rounded-md mb-2"
-        />
-        <h3 className="text-center text-sm font-medium text-gray-800 dark:text-white">
-          {item.name}
-        </h3>
-      </div>
-    ))}
-  </div>
-);
+      console.log(response)
+      if (response.ok) {
+        console.log(`Product ${productId} added to cart`);
+      } else {
+        console.log("Failed to add to cart");
+      }
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+  return (
+    <div className="flex flex-wrap gap-4 justify-center">
+      {data.map((item) => (
+        <div
+          key={item.id}
+          className="w-48 bg-white p-4 shadow-lg rounded-xl dark:bg-slate-800 dark:shadow-none dark:outline-white/10"
+        >
+          <img
+            src={item.img_url}
+            alt={item.name}
+            className="w-full h-auto rounded-md mb-2"
+          />
+          <h3 className="text-center text-sm font-medium text-gray-800 dark:text-white">
+            {item.name}
+          </h3>
+          <button
+            onClick={() => addToCart(item.id)}
+            className="mt-2 w-full bg-blue-500 text-white py-1 rounded hover:bg-blue-600 transition"
+          >
+            Add to Cart
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 
 // async function handleClick(productId){

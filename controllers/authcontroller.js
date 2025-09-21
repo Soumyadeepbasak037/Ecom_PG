@@ -14,7 +14,7 @@ const registerSchema = Joi.object({
 });
 
 exports.register = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, role } = req.body;
 
   const { error } = registerSchema.validate({ username, password, email });
   if (error) {
