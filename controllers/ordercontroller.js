@@ -48,10 +48,13 @@ exports.get_cart = async (req, res) => {
     // );
 
     const items = await db.query(
-      `select * from products where id in 
-(select product_id from cart_items where user_id = $1)`,
+      //       `select * from products where id in
+      // (select product_id from cart_items where user_id = $1)`,
+
+      `select cart.id,users.username,products.name,quantity from cart_items cart join users on users.id = cart.user_id join products on products.id = cart.product_id where users.id = $1`,
       [user_id]
     );
+    console.log(items.rows);
     res.json(items.rows);
   } catch (err) {
     console.log(err);

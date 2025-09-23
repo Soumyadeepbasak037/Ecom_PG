@@ -16,6 +16,7 @@ export default function FetchProducts() {
   }, []);
 
   const addToCart = async (productId) => {
+    console.log("hello")
     const token = localStorage.getItem("token");
     try {
       const response = await fetch("http://localhost:3000/api/orders/add_to_cart", {
@@ -29,9 +30,9 @@ export default function FetchProducts() {
 
       console.log(response)
       if (response.ok) {
-        console.log(`Product ${productId} added to cart`);
+        alert(`Product ${productId} added to cart`);
       } else {
-        console.log("Failed to add to cart");
+        alert("Failed to add to cart");
       }
     } catch (err) {
       console.error(err);
